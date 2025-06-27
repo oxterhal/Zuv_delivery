@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zuv_delivery_driver/widgets/Orlogo.dart';
-import 'package:zuv_delivery_driver/widgets/delivery_list_card/delivery_list_card.dart';
 
 class Home2page extends StatefulWidget {
   const Home2page({super.key});
