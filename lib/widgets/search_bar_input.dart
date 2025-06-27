@@ -98,10 +98,6 @@ class _SearchInputState extends State<SearchInput> {
                 width: 24,
                 height: 24,
                 semanticsLabel: 'Search Icon',
-                colorFilter: ColorFilter.mode(
-                  Colors.grey.shade600,
-                  BlendMode.srcIn,
-                ),
               ),
           SizedBox(width: 12),
 
@@ -131,7 +127,12 @@ class _SearchInputState extends State<SearchInput> {
                   color: Colors.grey.shade300,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.close, size: 16, color: Colors.grey.shade600),
+                child: SvgPicture.asset(
+                  'assets/PhoneCall.svg',
+                  width: 16,
+                  height: 16,
+                  semanticsLabel: 'My SVG Icon',
+                ),
               ),
             ),
         ],
