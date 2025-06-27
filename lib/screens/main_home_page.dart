@@ -13,8 +13,8 @@ class _MainHomePageState extends State<MainHomePage> {
 
   final List<Widget> widgetOptions = const [
     HomePage(),
-    LoginPage(),
     Home2page(),
+    LoginPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,9 +34,9 @@ class _MainHomePageState extends State<MainHomePage> {
         selectedItemColor: Colors.amber,
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Deliveries'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Login'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 's'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
