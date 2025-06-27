@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 import 'package:zuv_delivery_driver/model/index.dart';
 import 'package:zuv_delivery_driver/providers/auth_provider.dart';
 import 'package:zuv_delivery_driver/widgets/delivery_list_card/delivery_list_card.dart';
+import 'package:zuv_delivery_driver/widgets/search_bar_input.dart';
 
 class DeliveriesScreen extends StatefulWidget {
   const DeliveriesScreen({super.key});
@@ -14,6 +14,46 @@ class DeliveriesScreen extends StatefulWidget {
 }
 
 class _DeliveriesScreenState extends State<DeliveriesScreen> {
+  List<DeliveryData> _allDeliveries = [];
+  List<DeliveryData> _filteredDeliveries = [];
+  TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_filterDeliveries);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterDeliveries() {
+    String query = _searchController.text.toLowerCase().trim();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredDeliveries = _allDeliveries;
+      } else {
+        _filteredDeliveries =
+            _allDeliveries.where((delivery) {
+              // Filter by customer phone
+              bool matchesPhone =
+                  delivery.customerPhone?.toLowerCase().contains(query) ??
+                  false;
+
+              // Filter by merchant name
+              bool matchesMerchant =
+                  delivery.merchantName?.toLowerCase().contains(query) ?? false;
+
+              // Return true if either phone or merchant name matches
+              return matchesPhone || matchesMerchant;
+            }).toList();
+      }
+    });
+  }
+
   Future<List<DeliveryData>> _getDeliveryData() async {
     try {
       var dio = Dio();
@@ -43,12 +83,14 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
             return d;
           }).toList();
 
+      _allDeliveries = data;
+      _filteredDeliveries = data;
+
       return data;
     } catch (e) {
       print("error:" + e.toString());
     }
     return [];
-    // print(getDeliveryInfo);
   }
 
   @override
@@ -59,22 +101,31 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> {
         future: _getDeliveryData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final List<DeliveryData> specialData = snapshot.data ?? [];
-
             return SafeArea(
               child: CustomScrollView(
                 slivers: [
+                  // Search Input as a sliver using your existing widget
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: SearchInput(
+                        controller: _searchController,
+                        hintText: 'Утас эсвэл дэлгүүрийн нэрээр хайх',
+                      ),
+                    ),
+                  ),
+                  // Delivery list
                   SliverPadding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     sliver: SliverList.separated(
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 8);
                       },
                       itemBuilder: (ctx, index) {
-                        DeliveryData d = specialData[index];
+                        DeliveryData d = _filteredDeliveries[index];
                         return DeliverListCard(d);
                       },
-                      itemCount: specialData.length,
+                      itemCount: _filteredDeliveries.length,
                     ),
                   ),
                 ],

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zuv_delivery_driver/screens/bottom_screens/deliveries.dart';
 import 'package:zuv_delivery_driver/screens/bottom_screens/home_page.dart';
-import 'package:zuv_delivery_driver/screens/bottom_screens/login.dart';
 import 'package:zuv_delivery_driver/screens/bottom_screens/login_page.dart';
+import 'package:zuv_delivery_driver/screens/bottom_screens/my_page.dart';
 
 class MainHomePage extends StatefulWidget {
   @override
@@ -12,7 +11,11 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> widgetOptions = const [HomePage(), LoginPage()];
+  final List<Widget> widgetOptions = const [
+    HomePage(),
+    LoginPage(),
+    Home2page(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -23,7 +26,6 @@ class _MainHomePageState extends State<MainHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Noted')),
       body: widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
@@ -34,6 +36,7 @@ class _MainHomePageState extends State<MainHomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Login'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 's'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

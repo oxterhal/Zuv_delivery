@@ -80,38 +80,40 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'email',
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'email',
+                ),
+                onChanged: setPhone,
               ),
-              onChanged: setPhone,
-            ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'password',
+              SizedBox(height: 20),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'password',
+                ),
+                onChanged: setPassword,
               ),
-              onChanged: setPassword,
-            ),
-            SizedBox(height: 40),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                minimumSize: Size(double.infinity, 50),
+              SizedBox(height: 40),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  minimumSize: Size(double.infinity, 50),
+                ),
+                onPressed: onSubmit,
+                icon: Icon(Icons.login),
+                label: Text(isLoading ? 'Loading...' : 'Sign In'),
               ),
-              onPressed: onSubmit,
-              icon: Icon(Icons.login),
-              label: Text(isLoading ? 'Loading...' : 'Sign In'),
-            ),
-            Text(error, style: TextStyle(color: Colors.red)),
-          ],
+              Text(error, style: TextStyle(color: Colors.red)),
+            ],
+          ),
         ),
       ),
     );

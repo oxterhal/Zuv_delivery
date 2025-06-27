@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum DeliveryStatus {
-  pending(text: "Үүссэн", color: Color.fromARGB(255, 72, 150, 77)),
+  pending(text: "Үүссэн", color: Color(0xffFFCC17)),
   verified(text: "Баталгаажсан", color: Color(0xff0A77ED)),
   departed(text: "Хүргэгдсэн", color: Color(0xff5BC643));
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:zuv_delivery_driver/model/index.dart';
 import 'package:zuv_delivery_driver/widgets/delivery_list_card/delivery_list_card_address_details.dart';
 import 'delivery_list_card_date.dart';
@@ -38,7 +39,7 @@ class DeliverListCard extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       formattedDate,
                       style: const TextStyle(
@@ -53,26 +54,37 @@ class DeliverListCard extends StatelessWidget {
               DeliveryStatusWidget(deliveryStatus: data.deliveryStatus),
             ],
           ),
-          DeliveryPhoneWidget(phoneNumber: data.customerPhone),
-          DeliveryAddressDetailsWidget(deliveryAddress: data.deliveryAddress),
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.report_gmailerrorred,
-                size: 24,
-                color: Colors.grey,
+              SizedBox(height: 8),
+              DeliveryPhoneWidget(phoneNumber: data.customerPhone),
+              DeliveryAddressDetailsWidget(
+                deliveryAddress: data.deliveryAddress,
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  data.pickupAddress ?? "Байхгүй",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: const Color(0xff181C24).withAlpha(50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    'assets/AlertOctagon.svg',
+                    width: 24,
+                    height: 24,
+                    semanticsLabel: 'My SVG Icon',
                   ),
-                  overflow: TextOverflow.ellipsis,
-                ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      data.pickupAddress ?? "Байхгүй",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xff181C24).withAlpha(50),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

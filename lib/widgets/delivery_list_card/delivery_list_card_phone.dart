@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-/// Widget for displaying customer phone number in delivery card
 class DeliveryPhoneWidget extends StatelessWidget {
   final String phoneNumber;
 
@@ -10,14 +10,20 @@ class DeliveryPhoneWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.phone, size: 16, color: Color(0xffFC6A31)),
-        const SizedBox(width: 8),
+        // Icon(Icons.phone, size: 18, color: Color(0xffFC6A31)),
+        SvgPicture.asset(
+          'assets/PhoneCall.svg',
+          width: 16,
+          height: 16,
+          semanticsLabel: 'My SVG Icon',
+        ),
+        SizedBox(width: 4),
         Text(
           phoneNumber,
           style: const TextStyle(
             fontSize: 14,
             color: Color(0xffFC6A31),
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
