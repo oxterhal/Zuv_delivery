@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 enum DeliveryStatus {
-  pending(text: "Үүссэн", color: Color(0xffFFCC17)),
+  pending(text: "Хүлээгдэж буй", color: Color(0xffFFCC17)),
   verified(text: "Баталгаажсан", color: Color(0xff0A77ED)),
-  departed(text: "Хүргэгдсэн", color: Color(0xff5BC643));
+  departed(text: "Үүссэн", color: Color(0xff5BC643)),
+  completed(text: "Дууссан", color: Color(0xff28A745)),
+  cancelled(text: "Цуцлагдсан", color: Color(0xffDC3545));
 
   final String text;
   final Color color;
@@ -96,6 +98,10 @@ class DeliveryData {
         return DeliveryStatus.departed;
       case "pending":
         return DeliveryStatus.pending;
+      case "completed":
+        return DeliveryStatus.completed;
+      case "cancelled":
+        return DeliveryStatus.cancelled;
       default:
         return DeliveryStatus.pending;
     }

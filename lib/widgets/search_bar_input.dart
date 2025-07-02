@@ -75,10 +75,11 @@ class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 48,
       padding:
           widget.padding ?? EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        border: Border.all(color: widget.borderColor, width: 1.5),
+        border: Border.all(color: widget.borderColor),
         borderRadius: BorderRadius.circular(widget.borderRadius),
         color: widget.backgroundColor,
         boxShadow: [
@@ -116,25 +117,6 @@ class _SearchInputState extends State<SearchInput> {
               ),
             ),
           ),
-
-          // Clear Button
-          if (_showClearButton)
-            GestureDetector(
-              onTap: _clearText,
-              child: Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  'assets/PhoneCall.svg',
-                  width: 16,
-                  height: 16,
-                  semanticsLabel: 'My SVG Icon',
-                ),
-              ),
-            ),
         ],
       ),
     );

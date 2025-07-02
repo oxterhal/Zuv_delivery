@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:zuv_delivery_driver/model/index.dart';
+import 'package:zuv_delivery_driver/providers/auth_provider.dart';
+import 'package:zuv_delivery_driver/widgets/delivery_list_card/delivery_list_card.dart';
 import 'package:zuv_delivery_driver/widgets/Orlogo.dart';
 
 class Home2page extends StatefulWidget {
@@ -10,6 +15,68 @@ class Home2page extends StatefulWidget {
 }
 
 class _Home2pageState extends State<Home2page> {
+  final List<DeliveryData> _allDeliveries = [];
+  final List<DeliveryData> _filteredDeliveries = [];
+
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDeliveries();
+  }
+
+  Future<void> _loadDeliveries() async {
+    try {
+      final deliveries = await _fetchDeliveriesFromApi();
+      _updateDeliveryLists(deliveries);
+    } catch (error) {
+      _handleLoadingError(error.toString());
+    }
+  }
+
+  Future<List<DeliveryData>> _fetchDeliveriesFromApi() async {
+    final authProvider = context.read<AuthProvider>();
+    final merchantId = authProvider.merchantId ?? "";
+    final token = authProvider.token ?? "";
+
+    final dio = Dio();
+    final response = await dio.get(
+      'https://api.zuv-delivery.mn/v1/merchants/$merchantId/deliveries',
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
+
+    final jsonList = response.data["data"] as List<dynamic>;
+    return jsonList.map((json) => DeliveryData.fromJson(json)).toList();
+  }
+
+  void _updateDeliveryLists(List<DeliveryData> deliveries) {
+    setState(() {
+      _allDeliveries.clear();
+      _filteredDeliveries.clear();
+
+      _allDeliveries.addAll(deliveries);
+      _filteredDeliveries.addAll(deliveries);
+
+      _isLoading = false;
+      _errorMessage = null;
+    });
+  }
+
+  void _handleLoadingError(String error) {
+    setState(() {
+      _isLoading = false;
+      _errorMessage = error;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,12 +242,40 @@ class _Home2pageState extends State<Home2page> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Column(children: [const SizedBox(height: 20)]),
+                _buildDeliveryList(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDeliveryList() {
+    if (_isLoading) {
+      return const SizedBox(
+        height: 200,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return SizedBox(
+        height: 200,
+        child: Center(child: Text('Error: $_errorMessage')),
+      );
+    }
+
+    return Column(
+      children:
+          _filteredDeliveries
+              .map(
+                (delivery) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: DeliverListCard(delivery),
+                ),
+              )
+              .toList(),
     );
   }
 }
