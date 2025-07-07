@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zuv_delivery_driver/widgets/delivery_timeline.dart';
 
 class DeliveriesDetailScreen extends StatelessWidget {
   const DeliveriesDetailScreen({super.key});
@@ -128,6 +129,12 @@ class DeliveriesDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(height: 32),
+                    // Delivery Timeline
+                    DeliveryTimelineWidget(
+                      currentStatus: 0,
+                      orderDate: '2025.02.19 14:28',
                     ),
                   ],
                 ),
